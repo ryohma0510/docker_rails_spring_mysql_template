@@ -24,10 +24,10 @@ services:
     tty: false
     stdin_open: false
   db:
-    image: "postgres:9.6.2"
+    image: "mysql:5.6"
     environment:
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=password"
+      - "MYSQL_USER=mysql"
+      - "MYSQL_PASSWORD=password"
     volumes_from:
       - data
     ports:
@@ -35,7 +35,7 @@ services:
   data:
     image: "busybox"
     volumes:
-      - "db:/var/lib/postgresql/data"
+      - "db:/var/lib/mysql"
       - "bundle:/usr/local/bundle"
 
 volumes:

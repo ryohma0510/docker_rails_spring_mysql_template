@@ -1,5 +1,5 @@
 default: &default
-  adapter: postgresql
+  adapter: mysql2
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch('DATABASE_USER') { 'root' } %>
