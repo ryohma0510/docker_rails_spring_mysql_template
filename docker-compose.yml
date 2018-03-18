@@ -28,6 +28,8 @@ services:
     environment:
       - "MYSQL_USER=mysql"
       - "MYSQL_PASSWORD=password"
+    ports:
+      - 3306:3306
     volumes_from:
       - data
   data:
