@@ -30,6 +30,8 @@ services:
       - "MYSQL_ROOT_PASSWORD=password"
     volumes_from:
       - data
+    ports:
+      - 33306:3306
   data:
     image: "busybox"
     volumes:
