@@ -1,13 +1,13 @@
-FROM ruby:2.4.1
+FROM ruby:2.4.1 #Rubyイメージのバージョン2.4.1をダウンロード
 
-ENV LANG C.UTF-8
+ENV LANG C.UTF-8 #文字コードをUTF8に指定
 
-RUN apt-get update -qq && \
- apt-get install -y --no-install-recommends \
+RUN apt-get update -qq && \ #パッケージの更新 -qqはエラー以外表示しないオプション
+ apt-get install -y --no-install-recommends \ #--no-install-recommendsは推奨パッケージをインストールしないオプション
   build-essential \
   libpq-dev \
   libfontconfig1 && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* #ここ（http://ankyo.blog.so-net.ne.jp/2011-10-25）に詳しく載っている
 
 ENV ENTRYKIT_VERSION 0.4.0
 
@@ -16,14 +16,14 @@ RUN wget https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERS
   && rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
   && mv entrykit /bin/entrykit \
   && chmod +x /bin/entrykit \
-  && entrykit --symlink
+  && entrykit --symlink #entrykitのインストールと設定
 
 RUN mkdir /app
 
 WORKDIR /app
 
-RUN bundle config build.nokogiri --use-system-libraries
+RUN bundle config build.nokogiri --use-system-libraries #nokogiriはスクレイピング用のgem
 
 ENTRYPOINT [ \
-  "prehook", "ruby -v", "--", \
-  "prehook", "bundle install -j3 --quiet", "--"]
+  "prehook", "ruby -v", "--", \ #"--"はshellでいうと"&&"
+  "prehook", "bundle install -j3 --quiet", "--"] #-j3は並列処理でインストールする意味。これで高速でインストールできる。

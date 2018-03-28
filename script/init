@@ -8,4 +8,4 @@ docker-compose run --rm rails rails new . --force --database=mysql --skip-bundle
 
 cp -f template/database.yml config/database.yml
 
-docker-compose run --rm rails bundle exec spring binstub --all
+docker-compose run --rm rails bundle exec spring binstub --all #bin/spring が新規追加され、bin/rails, bin/rake にspringをloadするコードが追加される。

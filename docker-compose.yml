@@ -1,45 +1,45 @@
 version: '2'
 services:
-  rails: &app_base
+  rails: &app_base #ここの設定をapp_baseという変数名で登録(これは純粋にymlの記法)
     build:
-      context: .
-      dockerfile: "Dockerfile.dev"
-    command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+      context: . #ビルドコンテキストの指定
+      dockerfile: "Dockerfile.dev" #Dockerfileの指定。"Dockerfile"という名前のまま使うならこれはいらない
+    command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"] #コンテナ内でコマンドを実行
     env_file:
-      - "./.env.dev"
+      - "./.env.dev" #環境変数を記述したファイルを指定。秘密にしたい環境変数などを扱うときに使う。
     volumes:
-      - ".:/app"
+      - ".:/app" #「ホストマシンのディレクトリ:dockerのなかのディレクトリ」でマウント
     volumes_from:
-      - data
+      - data #dataコンテナのボリュームをマウント
     ports:
-      - "3000:3000"
+      - "3000:3000" #ホストマシンの3000番をdockerの3000番に転送
     depends_on:
-      - db
-    tty: true
-    stdin_open: true
+      - db #dbコンテナが立ち上がってから起動する。
+    tty: true #パソコンからの入力を受け付ける？
+    stdin_open: true #キーボードからの入力を受け付ける？
   spring:
-    <<: *app_base
+    <<: *app_base #純粋にymlの記法。先に登録したapp_baseの設定をここに展開
     command: ["bundle", "exec", "spring", "server"]
     ports: []
     tty: false
     stdin_open: false
   db:
-    image: "mysql:5.6"
-    environment:
+    image: "mysql:5.6" #イメージ名：タグ名で指定
+    environment: #環境変数を指定
       - "MYSQL_USER=root"
-      - "MYSQL_ROOT_PASSWORD=password"
+      - "MYSQL_ROOT_PASSWORD=password" #これがないと動いてくれない。詳しくはREADME参照
     volumes_from:
       - data
     ports:
-      - 13306:3306
+      - 13306:3306 #ローカルの3306版はすでにMySQLに使われている可能性が高いので13306を使用
   data:
-    image: "busybox"
+    image: "busybox" #Linuxコマンドを色々詰め込んだもの
     volumes:
-      - "db:/var/lib/mysql"
-      - "bundle:/usr/local/bundle"
+      - "db:/var/lib/mysql" #ローカルにdbというデータ領域(ボリューム)を作って、dockerの/var/lib/mysqlにマウント
+      - "bundle:/usr/local/bundle" #gemをキャッシュすることで、gemを追加するたびにbuildを実行しなくてすむ
 
 volumes:
   db:
-    driver: local
+    driver: local #ボリュームドライバを指定
   bundle:
     driver: local
