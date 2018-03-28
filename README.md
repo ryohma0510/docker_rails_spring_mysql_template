@@ -53,4 +53,4 @@ By using spring container, you can execute rails command fast.
 ### Why using entirkit?
 
 By executing "bundle install" in ENTRYPOINT, it is possible to cache gems into Docker Volume.
-You don't have to install all gems every time when some gems are addedin your project.
+You don't have to install all gems every time when some gems are added in your project.
