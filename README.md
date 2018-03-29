@@ -13,7 +13,7 @@ You can build the environment by just typing the command writtten below.
 ```
 $ git clone https://github.com/ryoma510/docker_rails_spring_mysql_template.git
 $ cd docker_rails_spring_mysql_template
-$ script init && bootstrap
+$ script/init && script/bootstrap
 ```
 
 ### MySQL root user password and how to connect mysql on docker
